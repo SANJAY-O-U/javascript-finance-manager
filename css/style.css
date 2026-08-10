@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+}
+
+#dashboard {
+    border: 1px solid black;
+    padding: 20px;
+    width: 300px;
+}
+#transactionList {
+    margin-top: 20px;
+}
+
+.transaction {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}

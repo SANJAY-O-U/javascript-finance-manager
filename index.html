@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFM</title>
+    <link rel="stylesheet" hred="./css/style.css">
+</head>
+<body>
+    <h1>Personal Finance Manager</h1>
+    <div id="dashboard">
+        <h2>Dashboard</h2>
+        <p>Income: $<span id="income">0</span></p>
+        <p>Expenses: $<span id="expense">0</span></p>
+        <p>Balance: $<span id="balance">0</span></p>
+    </div>
+    <h2>Add Transaction</h2>
+    <form id="transactionForm">
+        <input id="title" type="text" placeholder="title" required>
+        <input id="amount" type="number" placeholder="amount" required>
+        <input id="category" type="text" placeholder="category" required>
+        <select id="type" required>
+            <option value="Select">Select</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense </option>
+        </select>
+        <button id="submitBtn" type="submit">Add Transaction</button>
+
+    </form>
+    <h2>Transactions</h2>
+    <input id="searchInput" type="text" placeholder="Search transactions...">
+    <select id="typeFilter">
+        <option value="all">All</option>
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+    </select>
+    <div id="transactionList">
+    <script type="module" src="./js/app.js"></script>
+ 
+</body>
+</html>
