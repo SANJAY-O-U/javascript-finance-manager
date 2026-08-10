@@ -142,15 +142,27 @@ transactionList.addEventListener("click",(e)=>{
     submitBtn.textContent = "Update Transaction";
     }
 });
+//search and type filter
 const searchInput=document.querySelector("#searchInput");
 const typeFilter= document.querySelector("#typeFilter");
+const sortSelect= document.querySelector("#sortSelect");
 function getFilteredTransactions(){
     const searchTerm= searchInput.value.toLowerCase();
     const selectedType= typeFilter.value;
+    const sortOption= sortSelect.value;
     let result= transactions;
     result=result.filter(transaction=>transaction.title.toLowerCase().includes(searchTerm));
     if(selectedType !== "all"){
         result=result.filter(transaction=>transaction.type == selectedType);
+    }
+    if(sortOption==="amount-high"){
+        result.sort((a,b)=>b.amount-a.amount);
+    }
+    if(sortOption==="amount-low"){
+        result.sort((a,b)=>a.amount-b.amount);
+    }
+    if(sortOption==="title"){
+        result.sort((a,b)=>a.title.localeCompare(b.title));
     }
     return result;
 
@@ -158,5 +170,9 @@ function getFilteredTransactions(){
 
 searchInput.addEventListener("input",()=>{
     console.log(searchInput);
+    renderTransaction(getFilteredTransactions());
+})
+
+selectOption.addEventListener("change",()=>{
     renderTransaction(getFilteredTransactions());
 })
