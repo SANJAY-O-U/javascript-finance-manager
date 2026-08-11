@@ -105,7 +105,6 @@ transactionForm.addEventListener("submit",(e)=>{
     }
     if(editingTransactionId===null){
         transactions.push(transaction);
-        saveTransaction();
     }
     else{
         const transaction_edit=transactions.find(element=>element.id===editingTransactionId);
@@ -114,8 +113,8 @@ transactionForm.addEventListener("submit",(e)=>{
         transaction_edit.category=inputCategory.value;
         transaction_edit.type=inputType.value;
         editingTransactionId===null;
-        saveTransaction();
     }
+    saveTransaction(transactions);
     updateDashboard();
     renderTransaction(transactions);
     transactionForm.reset();
@@ -127,7 +126,7 @@ transactionList.addEventListener("click",(e)=>{
     if(e.target.classList.contains("delete-btn")){
         const transactionId= Number(e.target.dataset.id);
         transactions=transactions.filter((transaction)=>transaction.id !=transactionId);
-        saveTransaction();
+        saveTransaction(transactions);
         updateDashboard();
         document.getElementById(transactionId).remove();
     }
@@ -180,3 +179,11 @@ searchInput.addEventListener("input",()=>{
 sortSelect.addEventListener("change",()=>{
     renderTransaction(getFilteredTransactions());
 })
+//usd to inr API call
+const usdToInr= document.getElementById("usdToInr");
+(function getCurrencyRates(){
+    fetch("https://open.er-api.com/v6/latest/USD")
+    .then((response)=> {return response.json()})
+    .then((data)=> {usdToInr.textContent= data.rates.INR});
+
+})();

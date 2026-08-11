@@ -3,6 +3,6 @@ export function loadTransaction(){
     return transactions;
 };
 
-export function saveTransaction(){
+export function saveTransaction(transactions){
     localStorage.setItem("transactions",JSON.stringify(transactions));
 };
