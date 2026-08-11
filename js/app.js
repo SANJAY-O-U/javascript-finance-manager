@@ -1,3 +1,5 @@
+import { loadTransaction, saveTransaction } from "./storage.js";
+import { calculateIncome, calculateExpense, calculateBalance } from "./calculations.js";
 console.log("Finance Manager started!");
 
 const balanceElement = document.querySelector("#balance");
@@ -44,33 +46,23 @@ const expenseElement = document.querySelector("#expense");
         type:"expense"
     }
 ];*/
-function loadTransaction(){
-    let transactions= JSON.parse(localStorage.getItem("transactions")) || [];
-    return transactions;
-}
 let transactions= loadTransaction();
-
-function saveTransaction(){
-    localStorage.setItem("transactions",JSON.stringify(transactions));
-}
 let editingTransactionId= null;
 
 //Update Dashboard
-function updateDashboard(){
-const income = transactions
-    .filter(transaction => transaction.type === "income")
-    .reduce((total, transaction) => total + transaction.amount, 0);
+function updateDashboard() {
 
+    const income = calculateIncome(transactions);
 
-const expense = transactions
-    .filter(transaction => transaction.type === "expense")
-    .reduce((total, transaction) => total + transaction.amount, 0);
+    const expense = calculateExpense(transactions);
 
+    const balance = calculateBalance(transactions);
 
-const balance = income - expense;
-incomeElement.textContent = income;
-expenseElement.textContent = expense;
-balanceElement.textContent = balance;
+    incomeElement.textContent = income;
+
+    expenseElement.textContent = expense;
+
+    balanceElement.textContent = balance;
 }
 updateDashboard();
 //render Transaction
