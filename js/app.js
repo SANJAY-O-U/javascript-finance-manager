@@ -5,7 +5,7 @@ const incomeElement = document.querySelector("#income");
 const expenseElement = document.querySelector("#expense");
 
 
-let transactions = [
+/*let transactions = [
     {
         id: 1,
         title: "Salary",
@@ -43,7 +43,16 @@ let transactions = [
         category:"Shopping",
         type:"expense"
     }
-];
+];*/
+function loadTransaction(){
+    let transactions= JSON.parse(localStorage.getItem("transactions")) || [];
+    return transactions;
+}
+let transactions= loadTransaction();
+
+function saveTransaction(){
+    localStorage.setItem("transactions",JSON.stringify(transactions));
+}
 let editingTransactionId= null;
 
 //Update Dashboard
@@ -104,6 +113,7 @@ transactionForm.addEventListener("submit",(e)=>{
     }
     if(editingTransactionId===null){
         transactions.push(transaction);
+        saveTransaction();
     }
     else{
         const transaction_edit=transactions.find(element=>element.id===editingTransactionId);
@@ -112,6 +122,7 @@ transactionForm.addEventListener("submit",(e)=>{
         transaction_edit.category=inputCategory.value;
         transaction_edit.type=inputType.value;
         editingTransactionId===null;
+        saveTransaction();
     }
     updateDashboard();
     renderTransaction(transactions);
@@ -124,6 +135,7 @@ transactionList.addEventListener("click",(e)=>{
     if(e.target.classList.contains("delete-btn")){
         const transactionId= Number(e.target.dataset.id);
         transactions=transactions.filter((transaction)=>transaction.id !=transactionId);
+        saveTransaction();
         updateDashboard();
         document.getElementById(transactionId).remove();
     }
@@ -173,6 +185,6 @@ searchInput.addEventListener("input",()=>{
     renderTransaction(getFilteredTransactions());
 })
 
-selectOption.addEventListener("change",()=>{
+sortSelect.addEventListener("change",()=>{
     renderTransaction(getFilteredTransactions());
 })
