@@ -65,11 +65,11 @@ function updateDashboard() {
 
     const balance = calculateBalance(transactions);
 
-    incomeElement.textContent = income;
+    incomeElement.textContent = income.toLocaleString("en-IN");
 
-    expenseElement.textContent = expense;
+    expenseElement.textContent = expense.toLocaleString("en-IN");
 
-    balanceElement.textContent = balance;
+    balanceElement.textContent = balance.toLocaleString("en-IN");
 }
 updateDashboard();
 //render Transaction
@@ -78,18 +78,50 @@ function renderTransaction(transactionArray){
     transactionList.innerHTML="";
     for(let transaction of transactionArray){
         const transactionElement=document.createElement("div");
-        transactionElement.classList.add("transaction");
-        transactionElement.innerHTML=`
-        <div id="${transaction.id}">
-        <br>
-            <strong>${transaction.title}</strong>
-            <span>₹${transaction.amount}</span>
-            <span>${transaction.category}</span>
-            <span>${transaction.type}</span>
-            <button class="delete-btn" data-id="${transaction.id}">Delete</button>
-            <button class="edit-btn" data-id="${transaction.id}">Edit</button>
-        <div>
-        `;
+        transactionElement.classList.add("transaction",transaction.type);
+        transactionElement.innerHTML = `
+    <div class="transaction-info">
+
+        <strong class="transaction-title">
+            ${transaction.title}
+        </strong>
+
+        <span class="transaction-category">
+            ${transaction.category}
+        </span>
+
+        <span class="transaction-type">
+            ${transaction.type}
+        </span>
+
+    </div>
+
+    <div class="transaction-right">
+
+        <span class="transaction-amount">
+            ₹${transaction.amount}
+        </span>
+
+        <div class="transaction-actions">
+
+            <button
+                class="edit-btn"
+                data-id="${transaction.id}"
+            >
+                Edit
+            </button>
+
+            <button
+                class="delete-btn"
+                data-id="${transaction.id}"
+            >
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+`;
         transactionList.appendChild(transactionElement);
     }
 };
@@ -138,13 +170,16 @@ try{
 //delete and edit Transaction
 transactionList.addEventListener("click",(e)=>{
     if(e.target.classList.contains("delete-btn")){
+        if(confirm("Are you sure you want to delete this transaction?")){
         const transactionId= Number(e.target.dataset.id);
         transactions=transactions.filter((transaction)=>transaction.id !=transactionId);
         saveTransaction(transactions);
         updateDashboard();
-        document.getElementById(transactionId).remove();
+        renderTransaction(transactions);
+        }
     }
     if (event.target.classList.contains("edit-btn")) {
+        if(confirm("Are you sure you want to delete this transaction?")){
 
     const id = Number(event.target.dataset.id);
 
@@ -158,6 +193,7 @@ transactionList.addEventListener("click",(e)=>{
     inputType.value = transaction.type;
     submitBtn.textContent = "Update Transaction";
     }
+}
 });
 //search and type filter
 const searchInput=document.querySelector("#searchInput");

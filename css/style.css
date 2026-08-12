@@ -1,6 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     padding: 30px;
+     background-color: lightblue;
 }
 
 #dashboard {
@@ -16,6 +17,32 @@ body {
     border: 1px solid #ccc;
     padding: 15px;
     margin-bottom: 10px;
+
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.transaction-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.transaction-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.transaction-actions {
+    display: flex;
+    gap: 5px;
+}
+.transaction.income {
+    border: 5px solid green;
+}
+
+.transaction.expense {
+    border: 5px solid red;
 }
