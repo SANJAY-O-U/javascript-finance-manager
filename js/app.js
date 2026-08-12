@@ -1,6 +1,7 @@
 import { loadTransaction, saveTransaction } from "./storage.js";
 import { calculateIncome, calculateExpense, calculateBalance } from "./calculations.js";
 import { getCurrencyRates } from "./api.js";
+import { validateTransaction } from "./validation.js";
 console.log("Finance Manager started!");
 
 const balanceElement = document.querySelector("#balance");
@@ -94,7 +95,11 @@ const inputType=document.getElementById("type");
 const inputAmount=document.getElementById("amount");
 const inputCategory= document.getElementById("category");
 const submitBtn = document.querySelector("#submitBtn");
+const formError = document.querySelector("#formError");
+
 transactionForm.addEventListener("submit",(e)=>{
+try{
+    formError.textContent = "";
     console.log("Form Submitted");
     e.preventDefault();
     const transaction={
@@ -104,6 +109,7 @@ transactionForm.addEventListener("submit",(e)=>{
         category:inputCategory.value,
         type: inputType.value
     }
+    validateTransaction(transaction);
     if(editingTransactionId===null){
         transactions.push(transaction);
     }
@@ -120,7 +126,9 @@ transactionForm.addEventListener("submit",(e)=>{
     renderTransaction(transactions);
     transactionForm.reset();
     submitBtn.textContent = "Add Transaction";
-
+}catch(error){
+    formError.textContent = error.message;
+}
 });
 //delete and edit Transaction
 transactionList.addEventListener("click",(e)=>{
