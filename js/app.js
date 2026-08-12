@@ -2,6 +2,7 @@ import { loadTransaction, saveTransaction } from "./storage.js";
 import { calculateIncome, calculateExpense, calculateBalance } from "./calculations.js";
 import { getCurrencyRates } from "./api.js";
 import { validateTransaction } from "./validation.js";
+import { createGenerateId } from "./utils.js";
 console.log("Finance Manager started!");
 
 const balanceElement = document.querySelector("#balance");
@@ -49,6 +50,9 @@ const expenseElement = document.querySelector("#expense");
     }
 ];*/
 let transactions= loadTransaction();
+const highestId = transactions.reduce(
+    (max, transaction) =>Math.max(max, transaction.id),0
+);
 let editingTransactionId= null;
 
 //Update Dashboard
@@ -96,14 +100,14 @@ const inputAmount=document.getElementById("amount");
 const inputCategory= document.getElementById("category");
 const submitBtn = document.querySelector("#submitBtn");
 const formError = document.querySelector("#formError");
-
+const generateId=createGenerateId(highestId);
 transactionForm.addEventListener("submit",(e)=>{
 try{
     formError.textContent = "";
     console.log("Form Submitted");
     e.preventDefault();
     const transaction={
-        id:Date.now(),
+        id:generateId(),
         title: inputTitle.value,
         amount: Number(inputAmount.value),
         category:inputCategory.value,
