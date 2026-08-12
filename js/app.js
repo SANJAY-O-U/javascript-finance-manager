@@ -181,9 +181,21 @@ sortSelect.addEventListener("change",()=>{
 })
 //usd to inr API call
 const usdToInr= document.getElementById("usdToInr");
-(function getCurrencyRates(){
-    fetch("https://open.er-api.com/v6/latest/USD")
-    .then((response)=> {return response.json()})
-    .then((data)=> {usdToInr.textContent= data.rates.INR});
-
-})();
+const currencyError =document.querySelector("#currencyError");
+async function getCurrencyRates(){
+    try{
+    const response= await fetch("https://open.er-api.com/v6/latest/USD");
+    if(!response.ok){
+        throw new Error("Something is broken");
+    }
+    const data = await response.json();
+    const inrRate = data.rates.INR;
+    console.log(inrRate);
+    usdToInr.textContent=inrRate;
+    }
+    catch(error){
+        console.error(error);
+        currencyError.textContent ="Unable to load currency rates.";
+    }
+}
+getCurrencyRates();
