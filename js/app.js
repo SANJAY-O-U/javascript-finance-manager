@@ -1,5 +1,6 @@
 import { loadTransaction, saveTransaction } from "./storage.js";
 import { calculateIncome, calculateExpense, calculateBalance } from "./calculations.js";
+import { getCurrencyRates } from "./api.js";
 console.log("Finance Manager started!");
 
 const balanceElement = document.querySelector("#balance");
@@ -182,20 +183,14 @@ sortSelect.addEventListener("change",()=>{
 //usd to inr API call
 const usdToInr= document.getElementById("usdToInr");
 const currencyError =document.querySelector("#currencyError");
-async function getCurrencyRates(){
+async function updateCurrencyRates(){
     try{
-    const response= await fetch("https://open.er-api.com/v6/latest/USD");
-    if(!response.ok){
-        throw new Error("Something is broken");
-    }
-    const data = await response.json();
-    const inrRate = data.rates.INR;
-    console.log(inrRate);
-    usdToInr.textContent=inrRate;
+    const rates = await getCurrencyRates();
+    usdToInr.textContent=rates.INR;
     }
     catch(error){
         console.error(error);
         currencyError.textContent ="Unable to load currency rates.";
     }
 }
-getCurrencyRates();
+updateCurrencyRates();
