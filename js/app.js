@@ -3,6 +3,7 @@ import { calculateIncome, calculateExpense, calculateBalance } from "./calculati
 import { getCurrencyRates } from "./api.js";
 import { validateTransaction } from "./validation.js";
 import { createGenerateId } from "./utils.js";
+import { Transaction } from "./Transaction.js";
 console.log("Finance Manager started!");
 
 const balanceElement = document.querySelector("#balance");
@@ -106,13 +107,13 @@ try{
     formError.textContent = "";
     console.log("Form Submitted");
     e.preventDefault();
-    const transaction={
-        id:generateId(),
-        title: inputTitle.value,
-        amount: Number(inputAmount.value),
-        category:inputCategory.value,
-        type: inputType.value
-    }
+    const transaction= new Transaction(
+        generateId(),
+        inputTitle.value,
+        Number(inputAmount.value),
+        inputCategory.value,
+        inputType.value
+    );
     validateTransaction(transaction);
     if(editingTransactionId===null){
         transactions.push(transaction);
