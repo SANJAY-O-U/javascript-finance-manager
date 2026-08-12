@@ -2,7 +2,7 @@ import { loadTransaction, saveTransaction } from "./storage.js";
 import { calculateIncome, calculateExpense, calculateBalance } from "./calculations.js";
 import { getCurrencyRates } from "./api.js";
 import { validateTransaction } from "./validation.js";
-import { createGenerateId } from "./utils.js";
+import { createGenerateId , debounce} from "./utils.js";
 import { Transaction } from "./Transaction.js";
 console.log("Finance Manager started!");
 
@@ -185,10 +185,14 @@ function getFilteredTransactions(){
 
 }
 
-searchInput.addEventListener("input",()=>{
-    console.log(searchInput);
-    renderTransaction(getFilteredTransactions());
-})
+const handleSearch = debounce(function() {
+
+    renderTransaction(
+        getFilteredTransactions()
+    );
+
+}, 300);
+searchInput.addEventListener("input",handleSearch);
 
 sortSelect.addEventListener("change",()=>{
     renderTransaction(getFilteredTransactions());
